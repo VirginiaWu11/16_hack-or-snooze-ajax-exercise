@@ -24,6 +24,8 @@ async function login(evt) {
   $loginForm.trigger("reset");
 
   saveUserCredentialsInLocalStorage();
+  await getAndShowStoriesOnStart();
+  await getFavoriteStoriesOnStart();
   updateUIOnUserLogin();
 }
 

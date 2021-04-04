@@ -213,4 +213,9 @@ class User {
   }
 
   //   //delete favorite-------
+
+  //---- is story a favorite story?
+  isFavorite(story) {
+    return this.favorites.some((val) => val.storyId === story.storyId);
+  }
 }

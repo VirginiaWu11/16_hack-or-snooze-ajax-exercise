@@ -42,10 +42,12 @@ async function start() {
   // "Remember logged-in user" and log in, if credentials in localStorage
   await checkForRememberedUser();
   await getAndShowStoriesOnStart();
-  await getFavoriteStoriesOnStart();
 
   // if we got a logged-in user
-  if (currentUser) updateUIOnUserLogin();
+  if (currentUser) {
+    updateUIOnUserLogin();
+    await getFavoriteStoriesOnStart();
+  }
 }
 
 // Once the DOM is entirely loaded, begin the app

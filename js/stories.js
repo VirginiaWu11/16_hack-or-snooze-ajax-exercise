@@ -25,11 +25,11 @@ async function getFavoriteStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-  console.log(story);
   const hostName = story.getHostName();
+  const showStar = Boolean(currentUser);
   return $(`
       <li id="${story.storyId}">
-        <a href="#" class="favorite-star"><i class="fas fa-star"></i></a>
+        ${showStar ? getStarHTML(story, currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -70,6 +70,16 @@ function putFavoriteStoriesOnPage() {
 
   $allStoriesList.hide();
   $favoriteStoriesList.show();
+}
+
+// star HTML
+function getStarHTML(story, user) {
+  const isFavorite = user.isFavorite(story);
+  const starType = isFavorite ? "fas" : "far";
+  return `
+  <span class="star">
+    <i class="${starType} fa-star"></i>
+  </span>`;
 }
 
 async function submitNewStory(evt) {
