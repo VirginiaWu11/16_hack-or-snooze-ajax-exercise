@@ -12,6 +12,9 @@ async function getAndShowStoriesOnStart() {
 
   putStoriesOnPage();
 }
+async function getFavoriteStoriesOnStart() {
+  favoriteStoryList = await StoryList.getFavoriteStories();
+}
 
 /**
  * A render method to render HTML for an individual Story instance
@@ -22,10 +25,11 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
+  console.log(story);
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <a href="#" class="favorite-star"><i class="fas fa-star"></i></a>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -48,24 +52,25 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-
+  $favoriteStoriesList.hide();
   $allStoriesList.show();
 }
 
-// //
-// function putFavoriteStoriesOnPage() {
-//   console.debug("putFavoriteStoriesOnPage");
+//
+function putFavoriteStoriesOnPage() {
+  console.debug("putFavoriteStoriesOnPage");
 
-//   $allStoriesList.empty();
+  $favoriteStoriesList.empty();
 
-//   // loop through all of our stories and generate HTML for them
-//   for (let story of storyList.stories) {
-//     const $story = generateStoryMarkup(story);
-//     $allStoriesList.append($story);
-//   }
+  // loop through all of our stories and generate HTML for them
+  for (let story of favoriteStoryList.stories) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
 
-//   $allStoriesList.show();
-// }
+  $allStoriesList.hide();
+  $favoriteStoriesList.show();
+}
 
 async function submitNewStory(evt) {
   console.debug("submitNewStory", evt);

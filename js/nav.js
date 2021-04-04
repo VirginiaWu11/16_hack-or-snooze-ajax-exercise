@@ -14,6 +14,15 @@ function navAllStories(evt) {
 
 $body.on("click", "#nav-all", navAllStories);
 
+//------show favorites only-------
+function navFavoriteStories(evt) {
+  console.debug("navFavoriteStories", evt);
+  hidePageComponents();
+  putFavoriteStoriesOnPage();
+}
+
+$body.on("click", "#nav-favorites", navFavoriteStories);
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {

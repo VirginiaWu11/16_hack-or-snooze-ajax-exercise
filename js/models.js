@@ -65,6 +65,11 @@ class StoryList {
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
   }
+  //----favorite stories-----
+  static async getFavoriteStories() {
+    const stories = currentUser.favorites.map((story) => new Story(story));
+    return new StoryList(stories);
+  }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story

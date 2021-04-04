@@ -24,7 +24,13 @@ const $navFavorites = $("#nav-favorites");
  */
 
 function hidePageComponents() {
-  const components = [$allStoriesList, $loginForm, $signupForm, $newStoryForm];
+  const components = [
+    $allStoriesList,
+    $loginForm,
+    $signupForm,
+    $newStoryForm,
+    $favoriteStoriesList,
+  ];
   components.forEach((c) => c.hide());
 }
 
@@ -36,6 +42,7 @@ async function start() {
   // "Remember logged-in user" and log in, if credentials in localStorage
   await checkForRememberedUser();
   await getAndShowStoriesOnStart();
+  await getFavoriteStoriesOnStart();
 
   // if we got a logged-in user
   if (currentUser) updateUIOnUserLogin();
