@@ -80,6 +80,7 @@ class StoryList {
 
   static async addStory(currentUser, newStory) {
     // UNIMPLEMENTED: complete this function!
+
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "POST",
@@ -89,7 +90,9 @@ class StoryList {
       },
     });
     console.log(response);
-    return new Story(response.data.story);
+    let aStory = new Story(response.data.story);
+    currentUser.ownStories.push(aStory);
+    return aStory;
   }
 }
 
@@ -205,6 +208,8 @@ class User {
   }
   // // favorite--------
   async addFavorite(story) {
+    this.favorites.push(story);
+
     const response = await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: "POST",
@@ -215,6 +220,8 @@ class User {
   //   //delete favorite-------
 
   async removeFavorite(story) {
+    this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
+
     const response = await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: "DELETE",

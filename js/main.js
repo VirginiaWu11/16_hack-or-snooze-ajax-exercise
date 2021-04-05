@@ -8,6 +8,7 @@ const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
 const $favoriteStoriesList = $("#favorite-stories-list");
 const $storiesLists = $(".stories-list");
+const $myStoriesList = $("#my-stories-list");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
@@ -18,6 +19,7 @@ const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 const $navSubmit = $("#nav-submit");
 const $navFavorites = $("#nav-favorites");
+const $navMyStories = $("#nav-myStories");
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -31,6 +33,7 @@ function hidePageComponents() {
     $signupForm,
     $newStoryForm,
     $favoriteStoriesList,
+    $myStoriesList,
   ];
   components.forEach((c) => c.hide());
 }
@@ -46,7 +49,6 @@ async function start() {
 
   // if we got a logged-in user
   if (currentUser) {
-    await getFavoriteStoriesOnStart();
     updateUIOnUserLogin();
   }
 }

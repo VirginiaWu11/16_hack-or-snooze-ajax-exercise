@@ -23,6 +23,15 @@ function navFavoriteStories(evt) {
 
 $body.on("click", "#nav-favorites", navFavoriteStories);
 
+//------show my stories only-------
+function navMyStories(evt) {
+  console.debug("navMyStories", evt);
+  hidePageComponents();
+  putMyStoriesOnPage();
+}
+
+$body.on("click", "#nav-myStories", navMyStories);
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
@@ -43,6 +52,7 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navSubmit.show();
   $navFavorites.show();
+  $navMyStories.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 

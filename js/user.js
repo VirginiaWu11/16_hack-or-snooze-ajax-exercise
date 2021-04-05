@@ -113,7 +113,6 @@ async function updateUIOnUserLogin() {
 
   hidePageComponents();
   await getAndShowStoriesOnStart();
-  await getFavoriteStoriesOnStart();
   // $allStoriesList.show();
 
   updateNavOnLogin();

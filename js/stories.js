@@ -2,7 +2,7 @@
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
-let favoriteStoryList;
+// let favoriteStoryList; - delete
 
 /** Get and show stories when site first loads. */
 
@@ -12,9 +12,9 @@ async function getAndShowStoriesOnStart() {
 
   putStoriesOnPage();
 }
-async function getFavoriteStoriesOnStart() {
-  favoriteStoryList = await StoryList.getFavoriteStories();
-}
+// async function getFavoriteStoriesOnStart() {
+//   favoriteStoryList = await StoryList.getFavoriteStories();
+// } -- delete
 
 /**
  * A render method to render HTML for an individual Story instance
@@ -52,6 +52,7 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
+  $myStoriesList.hide();
   $favoriteStoriesList.hide();
   $allStoriesList.show();
 }
@@ -61,15 +62,36 @@ function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
 
   $favoriteStoriesList.empty();
-
-  // loop through all of our stories and generate HTML for them
-  for (let story of favoriteStoryList.stories) {
-    const $story = generateStoryMarkup(story);
-    $favoriteStoriesList.append($story);
+  if (currentUser.favorites.length === 0) {
+    $favoriteStoriesList.append(
+      "<h5>Click the star next to the story to add a favorite</h5>"
+    );
+  } else {
+    for (let story of currentUser.favorites) {
+      const $story = generateStoryMarkup(story);
+      $favoriteStoriesList.append($story);
+    }
   }
-
+  $myStoriesList.hide();
   $allStoriesList.hide();
   $favoriteStoriesList.show();
+}
+//
+function putMyStoriesOnPage() {
+  console.debug("putMyStoriesOnPage");
+
+  $myStoriesList.empty();
+  if (currentUser.ownStories.length === 0) {
+    $myStoriesList.append("<h5>No Stories Yet</h5>");
+  } else {
+    for (let story of currentUser.ownStories) {
+      const $story = generateStoryMarkup(story);
+      $myStoriesList.append($story);
+    }
+  }
+  $allStoriesList.hide();
+  $favoriteStoriesList.hide();
+  $myStoriesList.show();
 }
 
 // star HTML
@@ -115,7 +137,6 @@ async function toggleStoryFavorite(evt) {
     await currentUser.addFavorite(story);
     $target.closest("i").toggleClass("fas far");
   }
-  await getFavoriteStoriesOnStart();
   // await updateUIOnUserLogin();
 }
 $storiesLists.on("click", ".star", toggleStoryFavorite);
