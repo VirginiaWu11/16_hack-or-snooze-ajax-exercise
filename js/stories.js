@@ -77,7 +77,7 @@ function getStarHTML(story, user) {
   const isFavorite = user.isFavorite(story);
   const starType = isFavorite ? "fas" : "far";
   return `
-  <span class="star">
+  <span href="#" class="star">
     <i class="${starType} fa-star"></i>
   </span>`;
 }
@@ -102,3 +102,20 @@ async function submitNewStory(evt) {
 }
 
 $newStoryForm.on("submit", submitNewStory);
+
+async function toggleStoryFavorite(evt) {
+  const $target = $(evt.target);
+  const storyId = $(evt.target).closest("li").attr("id");
+  const story = storyList.stories.find((s) => s.storyId === storyId);
+
+  if ($target.hasClass("fas")) {
+    await currentUser.removeFavorite(story);
+    $target.closest("i").toggleClass("fas far");
+  } else {
+    await currentUser.addFavorite(story);
+    $target.closest("i").toggleClass("fas far");
+  }
+  await getFavoriteStoriesOnStart();
+  // await updateUIOnUserLogin();
+}
+$storiesLists.on("click", ".star", toggleStoryFavorite);

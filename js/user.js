@@ -24,8 +24,7 @@ async function login(evt) {
   $loginForm.trigger("reset");
 
   saveUserCredentialsInLocalStorage();
-  await getAndShowStoriesOnStart();
-  await getFavoriteStoriesOnStart();
+
   updateUIOnUserLogin();
 }
 
@@ -109,10 +108,13 @@ function saveUserCredentialsInLocalStorage() {
  * - generate the user profile part of the page
  */
 
-function updateUIOnUserLogin() {
+async function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
+
   hidePageComponents();
-  $allStoriesList.show();
+  await getAndShowStoriesOnStart();
+  await getFavoriteStoriesOnStart();
+  // $allStoriesList.show();
 
   updateNavOnLogin();
 }

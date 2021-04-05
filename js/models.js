@@ -204,15 +204,23 @@ class User {
     }
   }
   // // favorite--------
-  static async favorite(currentUser, story) {
+  async addFavorite(story) {
     const response = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: "POST",
-      data: { token: currentUser.loginToken },
+      data: { token: this.loginToken },
     });
   }
 
   //   //delete favorite-------
+
+  async removeFavorite(story) {
+    const response = await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: "DELETE",
+      data: { token: this.loginToken },
+    });
+  }
 
   //---- is story a favorite story?
   isFavorite(story) {

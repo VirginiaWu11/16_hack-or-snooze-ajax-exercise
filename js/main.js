@@ -7,6 +7,7 @@ const $body = $("body");
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
 const $favoriteStoriesList = $("#favorite-stories-list");
+const $storiesLists = $(".stories-list");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
@@ -45,8 +46,8 @@ async function start() {
 
   // if we got a logged-in user
   if (currentUser) {
-    updateUIOnUserLogin();
     await getFavoriteStoriesOnStart();
+    updateUIOnUserLogin();
   }
 }
 
