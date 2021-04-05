@@ -23,12 +23,13 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, showDeleteBtn = false) {
   // console.debug("generateStoryMarkup", story);
   const hostName = story.getHostName();
   const showStar = Boolean(currentUser);
   return $(`
       <li id="${story.storyId}">
+        ${showDeleteBtn ? getDeleteBtnHTML() : ""}
         ${showStar ? getStarHTML(story, currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -85,7 +86,7 @@ function putMyStoriesOnPage() {
     $myStoriesList.append("<h5>No Stories Yet</h5>");
   } else {
     for (let story of currentUser.ownStories) {
-      const $story = generateStoryMarkup(story);
+      const $story = generateStoryMarkup(story, true);
       $myStoriesList.append($story);
     }
   }
@@ -99,9 +100,17 @@ function getStarHTML(story, user) {
   const isFavorite = user.isFavorite(story);
   const starType = isFavorite ? "fas" : "far";
   return `
-  <span href="#" class="star">
+  <a href="#" class="star">
     <i class="${starType} fa-star"></i>
-  </span>`;
+  </a>`;
+}
+
+// DeleteBtn HTML
+function getDeleteBtnHTML() {
+  return `
+  <a href="#" class="trash">
+    <i class="fa fa-trash" aria-hidden="true"></i>
+  </a>`;
 }
 
 async function submitNewStory(evt) {
@@ -113,7 +122,6 @@ async function submitNewStory(evt) {
     author: $("#newStory-author").val(),
     url: $("#newStory-url").val(),
   };
-  console.log(newStory);
 
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
@@ -140,3 +148,13 @@ async function toggleStoryFavorite(evt) {
   // await updateUIOnUserLogin();
 }
 $storiesLists.on("click", ".star", toggleStoryFavorite);
+
+//----delete stories ---
+async function deleteStory(evt) {
+  const $target = $(evt.target);
+  const storyId = $(evt.target).closest("li").attr("id");
+
+  await storyList.removeStory(currentUser, storyId);
+  await putMyStoriesOnPage();
+}
+$storiesLists.on("click", ".trash", deleteStory);

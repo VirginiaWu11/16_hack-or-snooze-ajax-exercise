@@ -89,10 +89,23 @@ class StoryList {
         story: newStory,
       },
     });
-    console.log(response);
     let aStory = new Story(response.data.story);
     currentUser.ownStories.push(aStory);
     return aStory;
+  }
+  async removeStory(currentUser, storyId) {
+    const response = await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: currentUser.loginToken },
+    });
+    this.stories = this.stories.filter((s) => s.storyId !== storyId);
+    currentUser.ownStories = currentUser.ownStories.filter(
+      (s) => s.storyId !== storyId
+    );
+    currentUser.favorites = currentUser.favorites.filter(
+      (s) => s.storyId !== storyId
+    );
   }
 }
 
@@ -233,4 +246,5 @@ class User {
   isFavorite(story) {
     return this.favorites.some((val) => val.storyId === story.storyId);
   }
+  //   //delete favorite-------
 }
