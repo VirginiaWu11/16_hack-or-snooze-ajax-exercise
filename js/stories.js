@@ -128,6 +128,7 @@ async function submitNewStory(evt) {
   // currentUser = await User.signup(username, password, name);
   await StoryList.addStory(currentUser, newStory);
   $newStoryForm.trigger("reset");
+  hidePageComponents();
   getAndShowStoriesOnStart();
 }
 
